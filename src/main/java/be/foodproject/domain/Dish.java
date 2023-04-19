@@ -7,6 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 
 @Entity
 public class Dish {
@@ -14,6 +17,9 @@ public class Dish {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;	
+	
+	@NotEmpty(message = "Dish must have a name")
+    @Size(min = 2, max = 100)
 	private String name;
 	private int price;
 	private int timeMin;
@@ -30,7 +36,7 @@ public class Dish {
 		
 	}
 	
-	public Dish(String name, int price, int timeMin, String difficultLevel, Category category) {
+	public Dish(@NotEmpty(message = "Dish must have a name") @Size(min = 1, max = 100) String name, int price, int timeMin, String difficultLevel, Category category) {
 		super();
 		this.name = name;
 		this.price = price;

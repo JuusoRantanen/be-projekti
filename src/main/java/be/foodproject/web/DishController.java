@@ -1,9 +1,12 @@
 package be.foodproject.web;
 
+import javax.validation.Valid;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,12 +26,6 @@ public class DishController {
 	@Autowired
 	CategoryRepository categoryRepository;
 	
-//	@RequestMapping("main")
-//	@ResponseBody
-//	
-//	public String showMain() {
-//		return "This is the MAIN page jepajee";
-//	}
 	
 	@GetMapping("/index")
 	 public String home(Model model) {
@@ -57,8 +54,11 @@ public class DishController {
 	}
 	
 	@PostMapping(value="/saveDish")
-	public String saveDish(Dish dish) {
-		
+	public String saveDish(@Valid Dish dish, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			Log.info("Validation error happened");
+			return "newDish";
+		}
 		
 		dishRepository.save(dish);
 		return "redirect:dishes";
